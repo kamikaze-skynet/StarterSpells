@@ -43,7 +43,7 @@ internal static class Spells
         try
         {
             var res = CharacterResourceRepository.Get(character);
-            var skin = SingletonPersistent<LocalPlayer>.Instance?.GetSelectedSkin() ?? res.DefaultSkin;
+            var skin = LocalWizard.Player?.GetSelectedSkin() ?? res.DefaultSkin;
             StarterPatches.Bypass = true;
             try { return res.GetInitialSpell(skin); }
             finally { StarterPatches.Bypass = false; }

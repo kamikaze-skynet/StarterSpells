@@ -44,6 +44,7 @@ Other players' wizards are never touched.
 src/Plugin.cs          config (one entry per wizard) and startup
 src/StarterPatches.cs  the GetInitialSpell override and its contexts
 src/Spells.cs          choices, unlock checks, localized names
+src/LocalWizard.cs     which wizard you have selected (remembered from the game, with fallbacks)
 src/PickerUI.cs        in-menu picker
 thunderstore/          manifest, icon, README, CHANGELOG for the Thunderstore zip
 ```

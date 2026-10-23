@@ -1,6 +1,6 @@
 {
   "name": "StarterSpells",
-  "version_number": "1.0.0",
+  "version_number": "1.0.1",
   "website_url": "https://github.com/kamikaze-skynet/StarterSpells",
   "description": "Pick any spell as your wizard's starting spell, including spells no wizard starts with. Only changes your wizard; friends don't need it. Works with MoreWizards.",
   "dependencies": [

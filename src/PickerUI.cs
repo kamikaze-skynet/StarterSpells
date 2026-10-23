@@ -32,30 +32,38 @@ public class PickerUI : MonoBehaviour
 
     private static PickerUI instance;
 
+    private float nextErrorLog;
+
     private void Update()
     {
         instance = this;
-        try
+        if (Time.unscaledTime >= nextScan)
         {
-            if (Time.unscaledTime >= nextScan)
+            nextScan = Time.unscaledTime + 0.5f;
+            Step("menu check", () =>
             {
-                nextScan = Time.unscaledTime + 0.5f;
                 bool menu = UObject.FindObjectOfType<MainMenuManager>() != null;
                 bool run = UObject.FindObjectOfType<RunManager>() != null;
                 inMenu = menu && !run;
-            }
-
-            bool show = inMenu && Plugin.ShowPicker.Value && !hidden;
-            if (show && panel == null) Build();
-            if (canvasGo != null && canvasGo.activeSelf != show) canvasGo.SetActive(show);
-
-            if (inMenu) HandleKeys();
-            if (show) Refresh(false);
+            });
         }
+
+        bool show = inMenu && Plugin.ShowPicker.Value && !hidden;
+        if (show && panel == null) Step("build", Build);
+        if (canvasGo != null && canvasGo.activeSelf != show) Step("show/hide", () => canvasGo.SetActive(show));
+
+        if (inMenu) Step("keys", HandleKeys);
+        if (show && panel != null) Step("refresh", () => Refresh(false));
+    }
+
+    private void Step(string what, Action action)
+    {
+        try { action(); }
         catch (Exception ex)
         {
-            Plugin.Log.LogError($"Picker: {ex}");
-            nextScan = Time.unscaledTime + 5f;
+            if (Time.unscaledTime < nextErrorLog) return; // don't flood the log every frame
+            nextErrorLog = Time.unscaledTime + 10f;
+            Plugin.Log.LogError($"Picker ({what}): {ex}");
         }
     }
 
@@ -91,23 +99,25 @@ public class PickerUI : MonoBehaviour
         instance?.Refresh(true);
     }
 
-    private static CharacterId? CurrentCharacter()
-    {
-        try
-        {
-            var lp = SingletonPersistent<LocalPlayer>.Instance;
-            return lp != null ? lp.GetSelectedCharacter() : null;
-        }
-        catch { return null; }
-    }
+    private static CharacterId? CurrentCharacter() => LocalWizard.Current;
 
     // ---------- display ----------
 
     private void Refresh(bool force)
     {
         if (panel == null) return;
+
         var character = CurrentCharacter();
-        if (!character.HasValue || !Plugin.Choices.TryGetValue(character.Value, out var entry)) return;
+        if (!character.HasValue || !Plugin.Choices.TryGetValue(character.Value, out var entry))
+        {
+            if (shownChoice == "<none>" && !force) return;
+            shownChoice = "<none>";
+            shownCharacter = (CharacterId)(-1);
+            title.text = "STARTING SPELL";
+            value.text = "Pick a wizard first";
+            value.color = new Color(1f, 1f, 1f, 0.7f);
+            return;
+        }
 
         string choice = entry.Value;
         if (!force && character.Value == shownCharacter && choice == shownChoice) return;
@@ -130,8 +140,6 @@ public class PickerUI : MonoBehaviour
             if (choice != Plugin.DefaultChoice && Enum.TryParse(choice, out SpellType locked))
                 value.text = $"{Spells.SpellName(locked)} (locked)";
         }
-
-        hint.text = $"{Plugin.PrevKey.Value} / {Plugin.NextKey.Value} to change  -  {Plugin.ToggleKey.Value} to hide";
     }
 
     // ---------- building the UI ----------
@@ -167,6 +175,7 @@ public class PickerUI : MonoBehaviour
         value = NewText("Value", panel.transform, font, 30f, new Vector2(0f, 2f), new Vector2(400f, 40f));
         hint = NewText("Hint", panel.transform, font, 15f, new Vector2(0f, -40f), new Vector2(540f, 22f));
         hint.color = new Color(1f, 1f, 1f, 0.5f);
+        hint.text = $"{Plugin.PrevKey.Value} / {Plugin.NextKey.Value} to change  -  {Plugin.ToggleKey.Value} to hide";
 
         prevAction ??= () => Cycle(-1);
         nextAction ??= () => Cycle(+1);

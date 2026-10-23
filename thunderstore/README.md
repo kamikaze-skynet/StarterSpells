@@ -4,7 +4,7 @@ Choose your wizard's **starting spell** in The Spell Brigade, including the spel
 
 ## How to use
 
-In the main menu, a small panel shows your current wizard and their starting spell:
+In the main menu, a small panel at the bottom of the screen shows your current wizard and their starting spell:
 
 ```
 STARTING SPELL  -  Moon Mage
@@ -31,7 +31,7 @@ You can also set picks in your mod manager's config editor (or `BepInEx\config\g
 | Starting Spells | *(one per wizard)* | Default | Starting spell for that wizard |
 | General | AllowLockedSpells | false | Allow spells you haven't unlocked yet |
 | Picker | ShowPicker | true | Show the picker in the main menu |
-| Picker | Position | TopCenter | TopCenter, TopLeft, TopRight, BottomLeft, BottomRight or BottomCenter |
+| Picker | ScreenPosition | BottomCenter | BottomCenter, BottomLeft, BottomRight, TopCenter, TopLeft or TopRight |
 | Picker | PreviousKey / NextKey | F6 / F7 | Keys to cycle spells (Unity Input System key names) |
 | Picker | ToggleKey | F8 | Show or hide the picker |
 

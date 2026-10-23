@@ -20,7 +20,7 @@ public class Plugin : BasePlugin
 {
     public const string Guid = "girthy_mods.StarterSpells";
     public const string Name = "StarterSpells";
-    public const string Version = "1.0.0";
+    public const string Version = "1.0.1";
 
     internal static new ManualLogSource Log;
 
@@ -53,14 +53,16 @@ public class Plugin : BasePlugin
             "Allow starting with spells you haven't unlocked yet. Off = only spells you've unlocked.");
         ShowPicker = Config.Bind("Picker", "ShowPicker", true,
             "Show the starting-spell picker in the main menu.");
-        PickerPosition = Config.Bind("Picker", "Position", "TopCenter",
+        PickerPosition = Config.Bind("Picker", "ScreenPosition", "BottomCenter",
             new ConfigDescription("Where the picker sits on screen.",
                 new AcceptableValueList<string>("TopCenter", "TopLeft", "TopRight", "BottomLeft", "BottomRight", "BottomCenter")));
         PrevKey = Config.Bind("Picker", "PreviousKey", "F6", "Key for the previous spell (Unity Input System key name).");
         NextKey = Config.Bind("Picker", "NextKey", "F7", "Key for the next spell.");
         ToggleKey = Config.Bind("Picker", "ToggleKey", "F8", "Key to show or hide the picker.");
 
-        new Harmony(Guid).PatchAll(typeof(StarterPatches));
+        var harmony = new Harmony(Guid);
+        harmony.PatchAll(typeof(StarterPatches));
+        harmony.PatchAll(typeof(LocalWizard));
         AddComponent<PickerUI>();
 
         Log.LogInfo($"{Name} {Version} ready.");
