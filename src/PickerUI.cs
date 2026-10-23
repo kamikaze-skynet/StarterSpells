@@ -116,6 +116,7 @@ public class PickerUI : MonoBehaviour
             title.text = "STARTING SPELL";
             value.text = "Pick a wizard first";
             value.color = new Color(1f, 1f, 1f, 0.7f);
+            Plugin.Log.LogInfo("Picker: no wizard selected yet.");
             return;
         }
 
@@ -140,6 +141,7 @@ public class PickerUI : MonoBehaviour
             if (choice != Plugin.DefaultChoice && Enum.TryParse(choice, out SpellType locked))
                 value.text = $"{Spells.SpellName(locked)} (locked)";
         }
+        Plugin.Log.LogInfo($"Picker: {title.text} | {value.text}");
     }
 
     // ---------- building the UI ----------
@@ -167,13 +169,16 @@ public class PickerUI : MonoBehaviour
         var bg = panel.AddComponent<Image>();
         bg.color = new Color(0.08f, 0.05f, 0.14f, 0.85f);
         var pr = panel.GetComponent<RectTransform>();
-        pr.sizeDelta = new Vector2(560f, 118f);
+        pr.sizeDelta = new Vector2(600f, 150f);
         Anchor(pr, Plugin.PickerPosition.Value);
 
-        title = NewText("Title", panel.transform, font, 20f, new Vector2(0f, 38f), new Vector2(540f, 28f));
+        title = NewText("Title", panel.transform, font, 20f, new Vector2(0f, 46f), new Vector2(580f, 40f));
         title.color = new Color(0.75f, 0.7f, 0.95f);
-        value = NewText("Value", panel.transform, font, 30f, new Vector2(0f, 2f), new Vector2(400f, 40f));
-        hint = NewText("Hint", panel.transform, font, 15f, new Vector2(0f, -40f), new Vector2(540f, 22f));
+        value = NewText("Value", panel.transform, font, 30f, new Vector2(0f, 2f), new Vector2(400f, 56f));
+        value.enableAutoSizing = true; // long names shrink instead of running under the arrows
+        value.fontSizeMin = 18f;
+        value.fontSizeMax = 30f;
+        hint = NewText("Hint", panel.transform, font, 15f, new Vector2(0f, -48f), new Vector2(580f, 32f));
         hint.color = new Color(1f, 1f, 1f, 0.5f);
         hint.text = $"{Plugin.PrevKey.Value} / {Plugin.NextKey.Value} to change  -  {Plugin.ToggleKey.Value} to hide";
 
@@ -205,9 +210,9 @@ public class PickerUI : MonoBehaviour
         var t = go.AddComponent<TextMeshProUGUI>();
         t.font = font;
         t.fontSize = size;
-        t.alignment = TextAlignmentOptions.Center;
+        t.alignment = TextAlignmentOptions.Center; // centred both ways
         t.textWrappingMode = TextWrappingModes.NoWrap;
-        t.overflowMode = TextOverflowModes.Ellipsis;
+        t.overflowMode = TextOverflowModes.Overflow; // Ellipsis draws nothing if the line is taller than the box
         t.raycastTarget = false;
         t.color = Color.white;
         return t;

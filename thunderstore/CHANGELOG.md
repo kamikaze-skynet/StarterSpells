@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.2
+- Fix: the picker's text (wizard, spell, hint) was invisible. The text boxes were shorter than the game font's line height, and TextMeshPro's ellipsis mode then draws nothing. Text now always draws, with roomier boxes, and long spell names shrink to fit between the arrows.
+- The log now shows what the picker displays (`Picker: ...`).
+
 ## 1.0.1
 - Fix: the picker showed its arrows but no wizard or spell. The selected wizard is now remembered from the game's own selection calls, with fallbacks, and the log explains if it can't be found.
 - The picker shows "Pick a wizard first" instead of blank text.
