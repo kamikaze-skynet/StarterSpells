@@ -51,6 +51,18 @@ internal static class Spells
         catch { return null; }
     }
 
+    /// <summary>The spell's normal (no element) icon, the same sprite the game's menus use.</summary>
+    internal static UnityEngine.Sprite Icon(SpellType spell)
+    {
+        try
+        {
+            var icons = SpellConfigurationRepository.Get(spell)?.IconContainer;
+            if (icons == null) return null;
+            return icons.DefaultIcon ?? icons.GetIcon(default);
+        }
+        catch { return null; }
+    }
+
     private static readonly Dictionary<string, string> nameCache = new();
 
     internal static string SpellName(SpellType spell) => Localized("SpellName_" + spell, Pretty(spell.ToString()));

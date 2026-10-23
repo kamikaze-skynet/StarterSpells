@@ -8,7 +8,7 @@ In the main menu, a small panel at the bottom of the screen shows your current w
 
 ```
 STARTING SPELL  -  Moon Mage
-   [<]     Bomb Launcher     [>]
+   [<]  [icon]  Bomb Launcher  [>]
 F6 / F7 to change  -  F8 to hide
 ```
 

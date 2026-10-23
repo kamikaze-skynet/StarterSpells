@@ -23,6 +23,7 @@ public class PickerUI : MonoBehaviour
 
     private GameObject canvasGo, panel;
     private TextMeshProUGUI title, value, hint;
+    private Image icon;
     private float nextScan;
     private bool inMenu, hidden;
     private CharacterId shownCharacter = (CharacterId)(-1);
@@ -116,6 +117,7 @@ public class PickerUI : MonoBehaviour
             title.text = "STARTING SPELL";
             value.text = "Pick a wizard first";
             value.color = new Color(1f, 1f, 1f, 0.7f);
+            SetIcon(null, false);
             Plugin.Log.LogInfo("Picker: no wizard selected yet.");
             return;
         }
@@ -132,16 +134,31 @@ public class PickerUI : MonoBehaviour
         {
             value.text = Spells.SpellName(picked.Value);
             value.color = new Color(1f, 0.85f, 0.35f);
+            SetIcon(picked.Value, false);
+        }
+        else if (choice != Plugin.DefaultChoice && Enum.TryParse(choice, out SpellType locked))
+        {
+            value.text = $"{Spells.SpellName(locked)} (locked)";
+            value.color = new Color(1f, 1f, 1f, 0.6f);
+            SetIcon(locked, true);
         }
         else
         {
             var normal = Spells.NormalSpellFor(character.Value);
             value.text = normal.HasValue ? $"Default ({Spells.SpellName(normal.Value)})" : "Default";
             value.color = Color.white;
-            if (choice != Plugin.DefaultChoice && Enum.TryParse(choice, out SpellType locked))
-                value.text = $"{Spells.SpellName(locked)} (locked)";
+            SetIcon(normal, false);
         }
         Plugin.Log.LogInfo($"Picker: {title.text} | {value.text}");
+    }
+
+    private void SetIcon(SpellType? spell, bool dimmed)
+    {
+        if (icon == null) return;
+        Sprite sprite = spell.HasValue ? Spells.Icon(spell.Value) : null;
+        icon.sprite = sprite;
+        icon.enabled = sprite != null;
+        icon.color = dimmed ? new Color(0.45f, 0.45f, 0.45f, 0.8f) : Color.white;
     }
 
     // ---------- building the UI ----------
@@ -174,7 +191,17 @@ public class PickerUI : MonoBehaviour
 
         title = NewText("Title", panel.transform, font, 20f, new Vector2(0f, 46f), new Vector2(580f, 40f));
         title.color = new Color(0.75f, 0.7f, 0.95f);
-        value = NewText("Value", panel.transform, font, 30f, new Vector2(0f, 2f), new Vector2(400f, 56f));
+        // Row: [<]  [icon]  Spell Name  [>]   (arrows at +-235, icon 64px, name in the remaining space)
+        var iconGo = NewRect("Icon", panel.transform);
+        var iconRt = iconGo.GetComponent<RectTransform>();
+        iconRt.anchoredPosition = new Vector2(-160f, 2f);
+        iconRt.sizeDelta = new Vector2(64f, 64f);
+        icon = iconGo.AddComponent<Image>();
+        icon.preserveAspect = true;
+        icon.raycastTarget = false;
+        icon.enabled = false;
+
+        value = NewText("Value", panel.transform, font, 30f, new Vector2(38f, 2f), new Vector2(320f, 56f));
         value.enableAutoSizing = true; // long names shrink instead of running under the arrows
         value.fontSizeMin = 18f;
         value.fontSizeMax = 30f;

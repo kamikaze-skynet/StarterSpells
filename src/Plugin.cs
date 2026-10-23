@@ -20,7 +20,7 @@ public class Plugin : BasePlugin
 {
     public const string Guid = "girthy_mods.StarterSpells";
     public const string Name = "StarterSpells";
-    public const string Version = "1.0.2";
+    public const string Version = "1.1.0";
 
     internal static new ManualLogSource Log;
 

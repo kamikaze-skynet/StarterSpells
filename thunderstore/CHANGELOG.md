@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.0
+- The picker shows each spell's icon next to its name, using the game's own icons. Default shows your wizard's normal spell icon, and locked spells show dimmed.
+
 ## 1.0.2
 - Fix: the picker's text (wizard, spell, hint) was invisible. The text boxes were shorter than the game font's line height, and TextMeshPro's ellipsis mode then draws nothing. Text now always draws, with roomier boxes, and long spell names shrink to fit between the arrows.
 - The log now shows what the picker displays (`Picker: ...`).
