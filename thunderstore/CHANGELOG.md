@@ -1,3 +1,6 @@
+## 1.1.1
+- **Host's rules for everyone:** `AllowLockedSpells` now comes from the host while you're in their game. Your own your own starting spells and the picker stay yours. Your config file isn't changed, and your setting is back when you leave. If the host doesn't have the mod, locked spells stay locked.
+
 # Changelog
 
 ## 1.1.0

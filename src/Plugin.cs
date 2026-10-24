@@ -20,7 +20,7 @@ public class Plugin : BasePlugin
 {
     public const string Guid = "girthy_mods.StarterSpells";
     public const string Name = "StarterSpells";
-    public const string Version = "1.1.0";
+    public const string Version = "1.1.1";
 
     internal static new ManualLogSource Log;
 
@@ -37,6 +37,7 @@ public class Plugin : BasePlugin
     public override void Load()
     {
         Log = base.Log;
+        HostConfig.Init(this, Guid, new[] { "Starting Spells.*", "Picker.*" }, new System.Collections.Generic.Dictionary<string, string> { ["General.AllowLockedSpells"] = "false" });
 
         var options = new List<string> { DefaultChoice };
         foreach (SpellType s in Enum.GetValues(typeof(SpellType))) options.Add(s.ToString());

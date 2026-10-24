@@ -40,3 +40,7 @@ You can also set picks in your mod manager's config editor (or `BepInEx\config\g
 - Spell names use the game's own translations, so they appear in your language.
 - A wizard's passive that refers to "your starting spell" (like the Vampire Mage's life steal) follows your pick.
 - Locked spells are skipped unless `AllowLockedSpells` is on.
+
+## Multiplayer settings
+
+Your own starting spells and picker settings are yours. `AllowLockedSpells` comes from the host while you're in their game; if the host doesn't have the mod, locked spells stay locked.
