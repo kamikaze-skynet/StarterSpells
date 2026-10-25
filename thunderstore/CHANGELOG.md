@@ -1,3 +1,6 @@
+## 1.1.2
+- Fixed an error in the log at startup ("GetSelectedCharacter is called before initialization"): the picker no longer asks which wizard is selected before the game has loaded your profile.
+
 ## 1.1.1
 - **Host's rules for everyone:** `AllowLockedSpells` now comes from the host while you're in their game. Your own your own starting spells and the picker stay yours. Your config file isn't changed, and your setting is back when you leave. If the host doesn't have the mod, locked spells stay locked.
 

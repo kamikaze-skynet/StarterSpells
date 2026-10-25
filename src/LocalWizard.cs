@@ -41,13 +41,15 @@ internal static class LocalWizard
         get
         {
             var p = Player;
-            if (p != null)
+            bool ready = false;
+            try { ready = p != null && p.IsInitialized; } catch { }
+            if (ready) // asking before the profile is loaded makes the game log an error
             {
                 try { return lastSelected = p.GetSelectedCharacter(); }
                 catch (Exception ex) { LogOnce($"reading the selected wizard failed: {ex.Message}"); }
             }
             if (lastSelected.HasValue) return lastSelected;
-            LogOnce("the game's LocalPlayer object wasn't found yet");
+            if (p == null) LogOnce("the game's LocalPlayer object wasn't found yet");
             return null;
         }
     }
@@ -73,6 +75,6 @@ internal static class LocalWizard
     private static void LoadSelected(LocalPlayer __instance)
     {
         player = __instance;
-        try { lastSelected = __instance.GetSelectedCharacter(); } catch { }
+        try { if (__instance.IsInitialized) lastSelected = __instance.GetSelectedCharacter(); } catch { }
     }
 }
