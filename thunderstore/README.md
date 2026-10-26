@@ -17,12 +17,12 @@ F6 / F7 to change  -  F8 to hide
 - The wizard info panel in the menu previews the spell you picked.
 - The panel only appears in the main menu, never during a run.
 
-You can also set picks in your mod manager's config editor (or `BepInEx\config\girthy_mods.StarterSpells.cfg`): there's one dropdown per wizard under **Starting Spells**.
+You can also set picks in your mod manager's config editor (or the StarterSpells `.cfg` file in `BepInEx\config`): there's one dropdown per wizard under **Starting Spells**.
 
 ## Multiplayer
 
 - **Only your own wizard changes.** The game equips each player's starting spell on that player's own machine, then syncs it to everyone, so other players don't need this mod.
-- **Works with [MoreWizards](https://thunderstore.io/c/the-spell-brigade/p/girthy_mods/MoreWizards/)** and with vanilla lobbies.
+- **Works with MoreWizards** and with vanilla lobbies.
 
 ## Config
 
